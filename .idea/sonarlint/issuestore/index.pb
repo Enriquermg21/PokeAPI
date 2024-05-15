@@ -1,31 +1,3 @@
 
-e
-5app/src/main/java/com/example/pokeapi/MainActivity.kt,3\8\38a5d56d98aadc93a3d63deb8005f621cf63d831
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-F
-app/proguard-rules.pro,9\e\9e08934d811afe28fbc77aaa3c0d747b94348db9
-w
-Gapp/src/androidTest/java/com/example/pokeapi/ExampleInstrumentedTest.kt,8\c\8c17987863a606d766542d55ce1ded61d1df34d3
-C
-settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
-A
-gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
-h
-8app/src/test/java/com/example/pokeapi/ExampleUnitTest.kt,c\0\c0e30161a82a0424836275a7a21aa1616a5fa76e
-@
-build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
-D
-app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
-P
- app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
->
-app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
-;
-gradlew.bat,2\a\2a45a911a8f1836b0b6c5b758962572012d8f8c3
-I
-gradle/libs.versions.toml,d\7\d7595319a0658be6f1ed500ad590d42e4b28bc4f
-X
-(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
-7
-gradlew,5\b\5bbfa66edb4db3c7c33c5181f43510990d3307f9
