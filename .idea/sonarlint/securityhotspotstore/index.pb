@@ -15,3 +15,7 @@ P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
 e
 5app/src/main/java/com/example/pokeapi/PokeResponse.kt,a\7\a7915f15125e4a3f9229a6d7abea6e489750de6b
+d
+4app/src/main/java/com/example/pokeapi/PokeAdapter.kt,a\f\afc5959df67b30fd1fd05058beca55176a87ed01
+g
+7app/src/main/java/com/example/pokeapi/PokeViewHolder.kt,7\8\78047d9a1f81105916632871a15196d0f2e69c18
