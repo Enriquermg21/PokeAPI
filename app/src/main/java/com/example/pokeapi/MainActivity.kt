@@ -1,5 +1,6 @@
 package com.example.pokeapi
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -8,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeapi.databinding.ActivityMainBinding
 import dataRetrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
@@ -37,10 +37,14 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = PokeAdapter(pokeObj)
-        recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = PokeAdapter(pokeObj) { pokemonName ->
+            val intent = Intent(this, pokeinfoActivity::class.java).apply {
+                putExtra("POKEMON_NAME", pokemonName)
+            }
+            startActivity(intent)
+        }
+        binding.recyclerView.adapter = adapter
 
         getPokemonList()
 

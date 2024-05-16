@@ -21,3 +21,5 @@ g
 7app/src/main/java/com/example/pokeapi/PokeViewHolder.kt,7\8\78047d9a1f81105916632871a15196d0f2e69c18
 a
 1app/src/main/java/com/example/pokeapi/PokeInfo.kt,2\f\2f6aa59cdcf2bbf93e7561a0d619034cf9d3fd7f
+i
+9app/src/main/java/com/example/pokeapi/pokeinfoActivity.kt,5\c\5c1f7391be17d13d35f89a370f2669544e1b56bb
