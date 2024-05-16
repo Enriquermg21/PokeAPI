@@ -1,6 +1,8 @@
 package com.example.pokeapi
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeapi.databinding.ActivityMainBinding
 import dataRetrofit.RetrofitService
 import kotlinx.coroutines.CoroutineScope
@@ -34,10 +37,15 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             insets
         }
 
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.searchView.setOnQueryTextListener(this)
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing)
+        binding.rvPokelist.addItemDecoration(SpaceItemDecoration(spacingInPixels))
+
         initRecyclerView()
+        getPokemonList()
     }
 
     private fun initRecyclerView() {
@@ -56,7 +64,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     private fun searchByName(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val call: Response<PokeResponse> =
-                getRetrofit().create(RetrofitService::class.java).getPokemon("pokemon/$query")
+                getRetrofit().create(RetrofitService::class.java).getPokemon("pokemon$query")
             val pokemonResponse: PokeResponse? = call.body()
             runOnUiThread {
                 if (call.isSuccessful && pokemonResponse != null) {
@@ -73,6 +81,25 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         }
     }
 
+    private fun getPokemonList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call: Response<PokeResponse> =
+                getRetrofit().create(RetrofitService::class.java).getPokemon("pokemon")
+            val pokemonResponse: PokeResponse? = call.body()
+            runOnUiThread {
+                if (call.isSuccessful && pokemonResponse != null) {
+                    val pokemonNames = pokemonResponse.results.map { it.name }
+                    pokeObj.clear()
+                    pokeObj.addAll(pokemonNames)
+                    adapter.notifyDataSetChanged()
+                } else {
+                    showError()
+                }
+                showToast()
+                hideKeyboard()
+            }
+        }
+    }
 
     private fun showToast() {
         Toast.makeText(this, "Hasta aqui llega", Toast.LENGTH_LONG).show()
@@ -98,3 +125,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         return true
     }
 }
+
+class SpaceItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+
+    override fun getItemOffsets(
+        outRect: Rect, view: View, parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        outRect.bottom = space
+    }
+}
+
