@@ -13,3 +13,5 @@ C
 settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+e
+5app/src/main/java/com/example/pokeapi/PokeResponse.kt,a\7\a7915f15125e4a3f9229a6d7abea6e489750de6b

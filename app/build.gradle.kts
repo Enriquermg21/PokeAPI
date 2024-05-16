@@ -45,9 +45,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    //picasso
+    implementation("com.squreup.picasso:picasso:2.71828")
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    //Corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.6 ")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

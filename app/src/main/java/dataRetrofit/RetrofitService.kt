@@ -1,24 +1,11 @@
 package dataRetrofit
 
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.pokeapi.PokeResponse
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Url
 
-interface RetrofitService {
-
-    @GET("https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc")
-    suspend fun pokemonlist(
-        @Query("") apiKey: String,
-        @Query("") region: String
-    )
-}
-
-object RetrofitServiceFactory {
-    fun makeRetrofitService(): RetrofitService {
-        return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/discover/movie")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build().create(RetrofitService::class.java)
-    }
+interface ApiService {
+    @GET("pokemon") // Ajusta tu endpoint aquí
+    fun getPokemon(@Url url: String): Response<PokeResponse>
 }
