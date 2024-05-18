@@ -30,7 +30,7 @@
             android:textSize="35sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:paddingStart="50dp"
+            android:paddingStart="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
