@@ -7,13 +7,12 @@
 
     <ImageView
         android:id="@+id/pokemonImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:padding="3dp"
-        android:background="@drawable/border"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +27,7 @@
             android:id="@+id/pokemonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="35sp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:paddingStart="50dp"

@@ -7,19 +7,27 @@ import com.example.pokeapi.databinding.ItemPokemonBinding
 
 class PokeAdapter(
     private val pokemonList: List<String>,
-    private val clickListener: (String) -> Unit
-) :
-    RecyclerView.Adapter<PokemonViewHolder>() {
+    private val spriteList: List<String>,
+    private val onItemClick: (String) -> Unit,
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
+) :
+    RecyclerView.Adapter<PokeViewHolder>() {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokeViewHolder {
         val binding = ItemPokemonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PokemonViewHolder(binding.root)
+        return PokeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        holder.bind(pokemonList[position], clickListener)
+    override fun onBindViewHolder(holder: PokeViewHolder, position: Int) {
+        if (position < pokemonList.size && position < spriteList.size) {
+            val pokemonName = pokemonList[position]
+            val spriteUrl = spriteList[position]
+            holder.bind(pokemonName, spriteUrl)
+            holder.itemView.setOnClickListener {
+                onItemClick(pokemonName)
+            }
+        }
     }
 
     override fun getItemCount(): Int = pokemonList.size
 }
-

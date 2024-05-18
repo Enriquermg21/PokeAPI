@@ -1,7 +1,6 @@
 package com.example.pokeapi
 
 import com.google.gson.annotations.SerializedName
-
 data class PokeResponse(
     @SerializedName("count") var counter: Int,
     @SerializedName("next") var next: String?,
