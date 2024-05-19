@@ -5,7 +5,6 @@ import com.bumptech.glide.Glide
 import com.example.pokeapi.R
 import com.example.pokeapi.databinding.ItemPokemonBinding
 
-
 class PokeViewHolder(private val binding: ItemPokemonBinding) :
     RecyclerView.ViewHolder(binding.root) {
 

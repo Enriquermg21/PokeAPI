@@ -6,12 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeapi.databinding.ItemPokemonBinding
 
 class PokeAdapter(
-    private val pokemonList: List<String>,
-    private val spriteList: List<String>,
+    private var pokemonList: List<String>,
+    private var spriteList: List<String>,
     private val onItemClick: (String, String) -> Unit,
-
-) :
-    RecyclerView.Adapter<PokeViewHolder>() {
+) : RecyclerView.Adapter<PokeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokeViewHolder {
         val binding = ItemPokemonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,4 +28,9 @@ class PokeAdapter(
     }
 
     override fun getItemCount(): Int = pokemonList.size
+    fun updateData(newPokemonList: List<String>, newSpriteList: List<String>) {
+        pokemonList = newPokemonList
+        spriteList = newSpriteList
+        notifyDataSetChanged()
+    }
 }
