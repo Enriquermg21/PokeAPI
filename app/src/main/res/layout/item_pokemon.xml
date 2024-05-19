@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:background="@drawable/border">
+    android:background="@drawable/bordermain">
 
     <ImageView
         android:id="@+id/pokemonImage"
@@ -30,6 +30,7 @@
             android:textSize="35sp"
             android:textStyle="bold"
             android:textColor="@color/black"
+            android:fontFamily="casual"
             android:paddingStart="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
