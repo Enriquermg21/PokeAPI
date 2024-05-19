@@ -3,9 +3,7 @@ package com.example.pokeapi
 import com.google.gson.annotations.SerializedName
 
 data class PokeResponseSprite(
-    // @SerializedName("types") val types: Types,
     @SerializedName("sprites") val sprites: Sprites
-
 )
 
 data class Sprites(

@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,9 +46,12 @@ class MainActivity : AppCompatActivity() {
         showLoadingView()
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = PokeAdapter(pokeObj, pokeSprite) { capitalizedPokemonName ->
+        adapter = PokeAdapter(pokeObj, pokeSprite) { capitalizedPokemonName, pokemonSprite ->
             selectedPokemonName = capitalizedPokemonName
-            val intent = Intent(this, pokeinfoActivity::class.java).apply {}
+            val intent = Intent(this, pokeinfoActivity::class.java).apply {
+                putExtra("POKEMON_NAME", capitalizedPokemonName)
+                putExtra("POKEMON_SPRITE", pokemonSprite)
+            }
             startActivity(intent)
         }
         binding.recyclerView.adapter = adapter
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 if (call.isSuccessful && pokemonResponse != null) {
                     val capitalizedPokemonNames =
-                        pokemonResponse.results.map { it.name.capitalize() }
+                        pokemonResponse.results.map { it.name.capitalize(Locale.ROOT) }
                     val pokemonNames = pokemonResponse.results.map { it.name }
                     pokeObj.clear()
                     pokeObj.addAll(capitalizedPokemonNames)

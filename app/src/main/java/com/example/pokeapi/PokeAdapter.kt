@@ -8,7 +8,7 @@ import com.example.pokeapi.databinding.ItemPokemonBinding
 class PokeAdapter(
     private val pokemonList: List<String>,
     private val spriteList: List<String>,
-    private val onItemClick: (String) -> Unit,
+    private val onItemClick: (String, String) -> Unit,
 
 ) :
     RecyclerView.Adapter<PokeViewHolder>() {
@@ -24,7 +24,7 @@ class PokeAdapter(
             val spriteUrl = spriteList[position]
             holder.bind(pokemonName, spriteUrl)
             holder.itemView.setOnClickListener {
-                onItemClick(pokemonName)
+                onItemClick(pokemonName, spriteUrl)
             }
         }
     }
