@@ -17,8 +17,10 @@ class pokeinfoActivity : AppCompatActivity() {
 
         val pokemonName = intent.getStringExtra("POKEMON_NAME")
         val pokemonSprite = intent.getStringExtra("POKEMON_SPRITE")
+        val pokemonType = intent.getStringExtra("POKEMON_TYPE")
 
         bindingInfo.tvNameinfo.text = pokemonName
+        bindingInfo.tvTypeinfo.text = pokemonType
         Glide.with(this)
             .load(pokemonSprite)
             .into(bindingInfo.ivPokeinfo)

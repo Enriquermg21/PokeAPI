@@ -3,20 +3,26 @@ package com.example.pokeapi.Adapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokeapi.R
+import com.example.pokeapi.Views.Pokemon
 import com.example.pokeapi.databinding.ItemPokemonBinding
+import com.example.pokeapi.databinding.PokeinfoBinding
 
-class PokeViewHolder(private val binding: ItemPokemonBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class PokeViewHolder(
+    private val binding: ItemPokemonBinding,
+    private val bindingInfo: PokeinfoBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(name: String, spriteUrl: String) {
-        binding.pokemonName.text = name
-        if (spriteUrl.isNotEmpty()) {
+    fun bind(pokemon: Pokemon) {
+        binding.pokemonName.text = pokemon.name
+        bindingInfo.tvTypeinfo.text = pokemon.types
+        if (pokemon.spriteUrl.isNotEmpty()) {
             Glide.with(itemView.context)
-                .load(spriteUrl)
+                .load(pokemon.spriteUrl)
                 .centerInside()
                 .into(binding.pokemonImage)
         } else {
-            binding.pokemonImage.setImageResource(R.drawable.ic_launcher_background) // Usa una imagen de marcador de posición
+            binding.pokemonImage.setImageResource(R.drawable.ic_launcher_background)
         }
     }
 }
+

@@ -3,34 +3,35 @@ package com.example.pokeapi.Adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokeapi.Views.Pokemon
 import com.example.pokeapi.databinding.ItemPokemonBinding
+import com.example.pokeapi.databinding.PokeinfoBinding
 
 class PokeAdapter(
-    private var pokemonList: List<String>,
-    private var spriteList: List<String>,
-    private val onItemClick: (String, String) -> Unit,
+    private var pokemonList: List<Pokemon>,
+    private val onItemClick: (String, String, String) -> Unit
 ) : RecyclerView.Adapter<PokeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokeViewHolder {
         val binding = ItemPokemonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PokeViewHolder(binding)
+        val bindinginfo =
+            PokeinfoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PokeViewHolder(binding, bindinginfo)
     }
 
     override fun onBindViewHolder(holder: PokeViewHolder, position: Int) {
-        if (position < pokemonList.size && position < spriteList.size) {
-            val pokemonName = pokemonList[position]
-            val spriteUrl = spriteList[position]
-            holder.bind(pokemonName, spriteUrl)
-            holder.itemView.setOnClickListener {
-                onItemClick(pokemonName, spriteUrl)
-            }
+        val pokemon = pokemonList[position]
+        holder.bind(pokemon)
+        holder.itemView.setOnClickListener {
+            onItemClick(pokemon.name, pokemon.spriteUrl, pokemon.types)
         }
     }
 
     override fun getItemCount(): Int = pokemonList.size
-    fun updateData(newPokemonList: List<String>, newSpriteList: List<String>) {
+
+    fun updateList(newPokemonList: List<Pokemon>) {
         pokemonList = newPokemonList
-        spriteList = newSpriteList
         notifyDataSetChanged()
     }
 }
+

@@ -11,8 +11,13 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Locale
 
-data class Pokemon(val name: String, val spriteUrl: String)
+data class Pokemon(
+    val name: String,
+    val spriteUrl: String,
+    val types: String
+)
 
 class MainViewModel : ViewModel() {
 
@@ -24,6 +29,13 @@ class MainViewModel : ViewModel() {
 
     init {
         fetchPokemonData()
+        viewModelScope.launch {
+            val pokemonNames = fetchPokemonNames()
+            val pokemons = pokemonNames?.let { fetchPokemonSpritesAndTypes(it) }
+            if (pokemons != null) {
+                _pokemonList.value = pokemons
+            }
+        }
     }
 
     private fun getRetrofit(): Retrofit {
@@ -38,7 +50,7 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             val pokemonNames = fetchPokemonNames()
             if (pokemonNames != null) {
-                val pokemons = fetchPokemonSprites(pokemonNames)
+                val pokemons = fetchPokemonSpritesAndTypes(pokemonNames)
                 _pokemonList.value = pokemons
             } else {
                 _pokemonList.value = emptyList()
@@ -63,26 +75,43 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private suspend fun fetchPokemonSprites(names: List<String>): List<Pokemon> {
+    private suspend fun fetchPokemonSpritesAndTypes(names: List<String>): List<Pokemon> {
         val pokemons = mutableListOf<Pokemon>()
         for (name in names) {
             try {
                 val call: Response<PokeResponseSprite> =
                     getRetrofit().create(RetrofitService::class.java)
                         .getPokemonDetails("pokemon/$name")
+
                 val pokeResponseSprite: PokeResponseSprite? = call.body()
-                if (call.isSuccessful && pokeResponseSprite != null) {
-                    val sprite = pokeResponseSprite.sprites.frontDefault
-                    pokemons.add(Pokemon(name.capitalize(), sprite))
-                } else {
-                    pokemons.add(Pokemon(name.capitalize(), ""))
-                }
+
+                val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
+                val types = pokeResponseSprite?.types?.joinToString(", ") {
+                    it.typeDetail.name.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                    }
+                } ?: ""
+
+                pokemons.add(
+                    Pokemon(
+                        name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+                        sprite,
+                        types
+                    )
+                )
+
             } catch (e: Exception) {
-                pokemons.add(Pokemon(name.capitalize(), ""))
+                pokemons.add(
+                    Pokemon(
+                        name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+                        "",
+                        ""
+                    )
+                )
             }
         }
         return pokemons
     }
-}
 
+}
 

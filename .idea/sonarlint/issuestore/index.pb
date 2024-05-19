@@ -1,8 +1,6 @@
 
 9
 	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-e
-5app/src/main/java/com/example/pokeapi/MainActivity.kt,3\8\38a5d56d98aadc93a3d63deb8005f621cf63d831
 @
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 D
@@ -13,18 +11,6 @@ C
 settings.gradle.kts,7\4\749edfcc96398253e5b3416184e95c46621da850
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
-e
-5app/src/main/java/com/example/pokeapi/PokeResponse.kt,a\7\a7915f15125e4a3f9229a6d7abea6e489750de6b
-d
-4app/src/main/java/com/example/pokeapi/PokeAdapter.kt,a\f\afc5959df67b30fd1fd05058beca55176a87ed01
-g
-7app/src/main/java/com/example/pokeapi/PokeViewHolder.kt,7\8\78047d9a1f81105916632871a15196d0f2e69c18
-i
-9app/src/main/java/com/example/pokeapi/pokeinfoActivity.kt,5\c\5c1f7391be17d13d35f89a370f2669544e1b56bb
-k
-;app/src/main/java/com/example/pokeapi/PokeResponseSprite.kt,6\d\6d6a477e9dd0d3e0b39421d47f5aa31b4aa4f2d8
-f
-6app/src/main/java/com/example/pokeapi/MainViewModel.kt,7\f\7ff1e4e4960783d6e51147bb8eac6b7d2d1b0f3c
 l
 <app/src/main/java/com/example/pokeapi/Views/MainViewModel.kt,c\8\c858a719573c2cfbcaa4d4f081c8b824757bdb10
 o
@@ -41,3 +27,5 @@ t
 Dapp/src/main/java/com/example/pokeapi/Response/PokeResponseSprite.kt,e\7\e7b12bcf7fa04f55b0dbfc6c48dc7a9955496e1c
 o
 ?app/src/main/java/com/example/pokeapi/Adapter/PokeViewHolder.kt,e\d\ed8d0a4efa06946a62b947c9f60def32263835af
+r
+Bapp/src/main/java/com/example/pokeapi/Response/PokeResponseType.kt,b\f\bf409234025ed2ba716505e1f24cce91be89794a

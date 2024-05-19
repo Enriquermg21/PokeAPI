@@ -2,8 +2,8 @@ package com.example.pokeapi.Views
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -26,15 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        adapter = PokeAdapter(emptyList(), emptyList()) { capitalizedPokemonName, pokemonSprite ->
+        adapter = PokeAdapter(emptyList()) { name, sprite, type ->
             val intent = Intent(this, pokeinfoActivity::class.java).apply {
-                putExtra("POKEMON_NAME", capitalizedPokemonName)
-                putExtra("POKEMON_SPRITE", pokemonSprite)
+                putExtra("POKEMON_NAME", name)
+                putExtra("POKEMON_SPRITE", sprite)
+                putExtra("POKEMON_TYPE", type)
             }
             startActivity(intent)
         }
         binding.recyclerView.adapter = adapter
-
         observeViewModel()
     }
 
@@ -47,15 +47,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            mainViewModel.pokemonList.collectLatest { pokemonList ->
-                val names = pokemonList.map { it.name }
-                val sprites = pokemonList.map { it.spriteUrl }
-                adapter.updateData(names, sprites)
+            mainViewModel.pokemonList.collect { pokemons ->
+                Log.d("MainActivity", "Lista de Pokémon recibida: $pokemons")
+                adapter.updateList(pokemons)
             }
         }
-    }
-
-    private fun showError() {
-        Toast.makeText(this, "Error machote", Toast.LENGTH_LONG).show()
     }
 }
