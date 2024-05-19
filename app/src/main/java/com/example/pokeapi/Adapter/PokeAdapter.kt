@@ -1,4 +1,4 @@
-package com.example.pokeapi
+package com.example.pokeapi.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

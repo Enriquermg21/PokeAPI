@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PokeAPI</string>
-    <string name="PokemonName"></string>
-    <string name="imgvSprite"></string>
-    <string name="PokemonType"></string>
-    <string name="loading">Loading...</string>
+    <string name="PokemonName" translatable="false"></string>
+    <string name="imgvSprite">Sprite del pokemon</string>
+    <string name="PokemonType" translatable="false"></string>
+    <string name="loading">Cargando...</string>
 </resources>

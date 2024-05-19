@@ -1,8 +1,9 @@
-package com.example.pokeapi
+package com.example.pokeapi.Views
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.pokeapi.R
 import com.example.pokeapi.databinding.PokeinfoBinding
 
 class pokeinfoActivity : AppCompatActivity() {

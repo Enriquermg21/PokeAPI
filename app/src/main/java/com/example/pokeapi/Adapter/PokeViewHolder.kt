@@ -1,7 +1,8 @@
-package com.example.pokeapi
+package com.example.pokeapi.Adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.pokeapi.R
 import com.example.pokeapi.databinding.ItemPokemonBinding
 
 

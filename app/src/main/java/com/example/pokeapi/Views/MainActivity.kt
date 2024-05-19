@@ -1,16 +1,19 @@
-package com.example.pokeapi
+package com.example.pokeapi.Views
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokeapi.Adapter.PokeAdapter
+import com.example.pokeapi.R
+import com.example.pokeapi.Response.PokeResponse
+import com.example.pokeapi.Response.PokeResponseSprite
 import com.example.pokeapi.databinding.ActivityMainBinding
 import com.example.pokeapi.databinding.LoadingViewBinding
 import dataRetrofit.RetrofitService
@@ -31,6 +34,9 @@ class MainActivity : AppCompatActivity() {
     private val pokeObj = mutableListOf<String>()
     private val pokeSprite = mutableListOf<String>()
     private var selectedPokemonName: String? = null
+    private val mainViewModel: MainViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -84,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     showError()
                 }
-                hideKeyboard()
             }
         }
     }
@@ -115,14 +120,8 @@ class MainActivity : AppCompatActivity() {
                 pokeSprite.addAll(sprites)
                 adapter.notifyDataSetChanged()
                 hideLoadingView()
-                Log.d("getPokemonSpritesFull", "Updated adapter with new sprites")
             }
         }
-    }
-
-    private fun hideKeyboard() {
-        val imm: InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(binding.main.windowToken, 0)
     }
 
     private fun showError() {
