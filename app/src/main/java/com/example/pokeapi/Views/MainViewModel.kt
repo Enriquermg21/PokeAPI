@@ -25,11 +25,6 @@ class MainViewModel : ViewModel() {
     private val _pokemonList = MutableStateFlow<List<Pokemon>>(emptyList())
     val pokemonList: StateFlow<List<Pokemon>> get() = _pokemonList
 
-    private var currentOffset = 0 // Guarda el índice actual para cargar nombres de Pokémon
-
-    private var loadingThreshold =
-        10 // Define cuántos elementos antes del final de la lista se deben cargar los siguientes 100 Pokémon
-
     init {
         fetchPokemonData()
     }
@@ -44,7 +39,7 @@ class MainViewModel : ViewModel() {
     private fun fetchPokemonData() {
         _isLoading.value = true
         viewModelScope.launch {
-            val pokemonNames = fetchPokemonNames(currentOffset)
+            val pokemonNames = fetchPokemonNames()
             if (pokemonNames != null) {
                 val pokemons = fetchPokemonSpritesAndTypes(pokemonNames)
                 _pokemonList.value = pokemons
@@ -55,11 +50,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private suspend fun fetchPokemonNames(offset: Int): List<String>? {
+    private suspend fun fetchPokemonNames(): List<String>? {
         return try {
             val call: Response<PokeResponse> =
                 getRetrofit().create(RetrofitService::class.java)
-                    .getPokemon("pokemon?limit=151&offset=$offset")
+                    .getPokemon("pokemon?limit=151&offset=0")
             val pokemonResponse: PokeResponse? = call.body()
             if (call.isSuccessful && pokemonResponse != null) {
                 pokemonResponse.results.map { it.name }
@@ -83,9 +78,7 @@ class MainViewModel : ViewModel() {
 
                 val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
 
-                // Verificar si sprite es nulo o vacío
                 if (sprite.isNullOrEmpty()) {
-                    // Si sprite es nulo o vacío, omitimos este Pokémon y continuamos con el siguiente
                     continue
                 }
 
@@ -94,7 +87,6 @@ class MainViewModel : ViewModel() {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                     }
                 } ?: ""
-
                 pokemons.add(
                     Pokemon(
                         name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
@@ -102,9 +94,7 @@ class MainViewModel : ViewModel() {
                         types
                     )
                 )
-
             } catch (e: Exception) {
-                // En caso de error, puedes manejarlo aquí si lo deseas
             }
         }
         return pokemons

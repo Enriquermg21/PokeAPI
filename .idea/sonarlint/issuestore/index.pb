@@ -27,5 +27,3 @@ t
 Dapp/src/main/java/com/example/pokeapi/Response/PokeResponseSprite.kt,e\7\e7b12bcf7fa04f55b0dbfc6c48dc7a9955496e1c
 o
 ?app/src/main/java/com/example/pokeapi/Adapter/PokeViewHolder.kt,e\d\ed8d0a4efa06946a62b947c9f60def32263835af
-r
-Bapp/src/main/java/com/example/pokeapi/Response/PokeResponseType.kt,b\f\bf409234025ed2ba716505e1f24cce91be89794a
