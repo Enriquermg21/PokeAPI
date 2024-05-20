@@ -1,5 +1,6 @@
 package com.example.pokeapi.Views
 
+import MainViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

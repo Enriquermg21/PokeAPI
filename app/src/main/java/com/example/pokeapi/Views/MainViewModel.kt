@@ -1,5 +1,3 @@
-package com.example.pokeapi.Views
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokeapi.Response.PokeResponse
@@ -27,15 +25,13 @@ class MainViewModel : ViewModel() {
     private val _pokemonList = MutableStateFlow<List<Pokemon>>(emptyList())
     val pokemonList: StateFlow<List<Pokemon>> get() = _pokemonList
 
+    private var currentOffset = 0 // Guarda el índice actual para cargar nombres de Pokémon
+
+    private var loadingThreshold =
+        10 // Define cuántos elementos antes del final de la lista se deben cargar los siguientes 100 Pokémon
+
     init {
         fetchPokemonData()
-        viewModelScope.launch {
-            val pokemonNames = fetchPokemonNames()
-            val pokemons = pokemonNames?.let { fetchPokemonSpritesAndTypes(it) }
-            if (pokemons != null) {
-                _pokemonList.value = pokemons
-            }
-        }
     }
 
     private fun getRetrofit(): Retrofit {
@@ -48,7 +44,7 @@ class MainViewModel : ViewModel() {
     private fun fetchPokemonData() {
         _isLoading.value = true
         viewModelScope.launch {
-            val pokemonNames = fetchPokemonNames()
+            val pokemonNames = fetchPokemonNames(currentOffset)
             if (pokemonNames != null) {
                 val pokemons = fetchPokemonSpritesAndTypes(pokemonNames)
                 _pokemonList.value = pokemons
@@ -59,11 +55,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private suspend fun fetchPokemonNames(): List<String>? {
+    private suspend fun fetchPokemonNames(offset: Int): List<String>? {
         return try {
             val call: Response<PokeResponse> =
                 getRetrofit().create(RetrofitService::class.java)
-                    .getPokemon("pokemon?limit=10&offset=0")
+                    .getPokemon("pokemon?limit=151&offset=$offset")
             val pokemonResponse: PokeResponse? = call.body()
             if (call.isSuccessful && pokemonResponse != null) {
                 pokemonResponse.results.map { it.name }
@@ -86,6 +82,13 @@ class MainViewModel : ViewModel() {
                 val pokeResponseSprite: PokeResponseSprite? = call.body()
 
                 val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
+
+                // Verificar si sprite es nulo o vacío
+                if (sprite.isNullOrEmpty()) {
+                    // Si sprite es nulo o vacío, omitimos este Pokémon y continuamos con el siguiente
+                    continue
+                }
+
                 val types = pokeResponseSprite?.types?.joinToString(", ") {
                     it.typeDetail.name.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
@@ -101,17 +104,10 @@ class MainViewModel : ViewModel() {
                 )
 
             } catch (e: Exception) {
-                pokemons.add(
-                    Pokemon(
-                        name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
-                        "",
-                        ""
-                    )
-                )
+                // En caso de error, puedes manejarlo aquí si lo deseas
             }
         }
         return pokemons
     }
 
 }
-

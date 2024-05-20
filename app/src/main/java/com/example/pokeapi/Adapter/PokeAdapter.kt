@@ -1,9 +1,9 @@
 package com.example.pokeapi.Adapter
 
+import Pokemon
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokeapi.Views.Pokemon
 import com.example.pokeapi.databinding.ItemPokemonBinding
 import com.example.pokeapi.databinding.PokeinfoBinding
 
