@@ -1,8 +1,10 @@
+package com.example.pokeapi.views
+
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokeapi.Response.PokeResponse
-import com.example.pokeapi.Response.PokeResponseSprite
+import com.example.pokeapi.response.PokeResponse
+import com.example.pokeapi.response.PokeResponseSprite
 import dataRetrofit.RetrofitService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +30,9 @@ class MainViewModel : ViewModel() {
     private val _pokemonList = MutableStateFlow<List<Pokemon>>(emptyList())
     val pokemonList: StateFlow<List<Pokemon>> get() = _pokemonList
 
+    private val maxRetries = 20
+    private val retryDelay = 1000L
 
-    private val MAX_RETRIES = 200
-    private val RETRY_DELAY_MS = 1000L
     init {
         fetchPokemonData()
     }
@@ -45,7 +47,7 @@ class MainViewModel : ViewModel() {
     private fun fetchPokemonData() {
         _isLoading.value = true
         viewModelScope.launch {
-            val totalPokemons = 300
+            val totalPokemons = 150
             val batchSize = 50
 
             val pokemonNames = fetchAllPokemonNames(totalPokemons, batchSize)
@@ -65,11 +67,11 @@ class MainViewModel : ViewModel() {
             try {
                 return apiCall()
             } catch (e: Exception) {
-                if (retries >= MAX_RETRIES || e !is UnknownHostException) {
-                    throw e // Si el número máximo de reintentos ha sido alcanzado o no es un error de conexión, lanzar la excepción
+                if (retries >= maxRetries || e !is UnknownHostException) {
+                    throw e
                 }
                 retries++
-                delay(RETRY_DELAY_MS * retries) // Esperar antes de intentar de nuevo
+                delay(retryDelay * retries)
             }
         }
     }
@@ -113,58 +115,47 @@ class MainViewModel : ViewModel() {
     ): List<Pokemon> {
         val pokemons = mutableListOf<Pokemon>()
         for (i in names.indices step batchSize) {
-            val batch = names.subList(i, minOf(i + batchSize, names.size))
-            val batchPokemons = fetchPokemonSpritesAndTypes(batch)
-            pokemons.addAll(batchPokemons)
-            Log.d("fetchPokemonData", "Fetched ${pokemons.size} Pokemon so far")
+            try {
+                val batch = names.subList(i, minOf(i + batchSize, names.size))
+                for ((index, name) in batch.withIndex()) {
+                    val call: Response<PokeResponseSprite> =
+                        getRetrofit().create(RetrofitService::class.java)
+                            .getPokemonDetails("pokemon/$name")
 
-            // Update the view with the currently loaded pokemons
+                    val pokeResponseSprite: PokeResponseSprite? = call.body()
+
+                    val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
+
+                    if (sprite.isEmpty()) {
+                        continue
+                    }
+
+                    val types = pokeResponseSprite?.types?.joinToString(", ") { it ->
+                        it.typeDetail.name.replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                        }
+                    } ?: ""
+                    pokemons.add(
+                        Pokemon(
+                            name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+                            sprite,
+                            types
+                        )
+                    )
+                    Log.d("fetchPokemonSprites", "Fetched sprite for $name ($index/${batch.size})")
+                }
+            } catch (e: Exception) {
+                Log.e(
+                    "fetchPokemonSprites",
+                    "Exception fetching com.example.pokeapi.Views.Pokemon batch: ${e.message}"
+                )
+            }
+
             _pokemonList.value = pokemons.toList()
-
-            // Stop showing loading screen after the first batch
             if (i == 0) {
                 _isLoading.value = false
             }
         }
-        return pokemons
-    }
-
-    private suspend fun fetchPokemonSpritesAndTypes(names: List<String>): List<Pokemon> {
-        val pokemons = mutableListOf<Pokemon>()
-        for ((index, name) in names.withIndex()) {
-            try {
-                val call: Response<PokeResponseSprite> =
-                    getRetrofit().create(RetrofitService::class.java)
-                        .getPokemonDetails("pokemon/$name")
-
-                val pokeResponseSprite: PokeResponseSprite? = call.body()
-
-                val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
-
-                if (sprite.isEmpty()) {
-                    Log.w("fetchPokemonSprites", "No sprite found for $name")
-                    continue
-                }
-
-                val types = pokeResponseSprite?.types?.joinToString(", ") {
-                    it.typeDetail.name.replaceFirstChar {
-                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                    }
-                } ?: ""
-
-                pokemons.add(
-                    Pokemon(
-                        name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
-                        sprite,
-                        types
-                    )
-                )
-                Log.d("fetchPokemonSprites", "Fetched sprite for $name ($index/${names.size})")
-            } catch (e: Exception) {
-                Log.e("fetchPokemonSprites", "Exception fetching $name: ${e.message}")
-            }
-        }
-        Log.d("fetchPokemonSprites", "Total sprites fetched: ${pokemons.size}")
         return pokemons
     }
 }

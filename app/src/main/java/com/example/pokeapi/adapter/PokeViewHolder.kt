@@ -1,11 +1,11 @@
-package com.example.pokeapi.Adapter
+package com.example.pokeapi.adapter
 
-import Pokemon
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokeapi.R
 import com.example.pokeapi.databinding.ItemPokemonBinding
 import com.example.pokeapi.databinding.PokeinfoBinding
+import com.example.pokeapi.views.Pokemon
 
 class PokeViewHolder(
     private val binding: ItemPokemonBinding,

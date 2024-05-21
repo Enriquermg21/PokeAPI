@@ -1,6 +1,5 @@
-package com.example.pokeapi.Views
+package com.example.pokeapi.views
 
-import MainViewModel
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokeapi.Adapter.PokeAdapter
+import com.example.pokeapi.adapter.PokeAdapter
 import com.example.pokeapi.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = PokeAdapter(emptyList()) { name, sprite, type ->
-            val intent = Intent(this, pokeinfoActivity::class.java).apply {
+            val intent = Intent(this, PokeinfoActivity::class.java).apply {
                 putExtra("POKEMON_NAME", name)
                 putExtra("POKEMON_SPRITE", sprite)
                 putExtra("POKEMON_TYPE", type)
