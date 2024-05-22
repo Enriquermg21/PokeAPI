@@ -20,4 +20,8 @@
     <include
         layout="@layout/loading_view"
         android:id="@+id/layoutloading" />
+
+    <include
+        layout="@layout/loading_viewwithoutback"
+        android:id="@+id/layoutloadingwithoutback" />
 </androidx.constraintlayout.widget.ConstraintLayout>

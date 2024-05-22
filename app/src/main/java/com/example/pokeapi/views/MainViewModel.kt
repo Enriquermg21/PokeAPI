@@ -22,16 +22,23 @@ data class Pokemon(
     val types: String
 )
 
+
 class MainViewModel : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> get() = _isLoading
 
+    val _isLoading2 = MutableStateFlow(false)
+    val isLoading2: StateFlow<Boolean> get() = _isLoading2
+
     private val _pokemonList = MutableStateFlow<List<Pokemon>>(emptyList())
     val pokemonList: StateFlow<List<Pokemon>> get() = _pokemonList
 
-    private val maxRetries = 20
+    private var offset = 0
+    private val limit = 20
+    private val maxRetries = 50
     private val retryDelay = 1000L
+    private var isLoadingSet = false
 
     init {
         fetchPokemonData()
@@ -45,19 +52,28 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchPokemonData() {
-        _isLoading.value = true
+        if (!isLoadingSet) {
+            _isLoading.value = true
+            isLoadingSet = true // Marca isLoading como true por primera vez
+        } else {
+            _isLoading2.value = true
+        }
         viewModelScope.launch {
-            val totalPokemons = 150
-            val batchSize = 50
-
-            val pokemonNames = fetchAllPokemonNames(totalPokemons, batchSize)
-            if (pokemonNames.isNotEmpty()) {
-                val pokemons = fetchPokemonSpritesAndTypesInBatches(pokemonNames, batchSize)
-                _pokemonList.value = pokemons
-            } else {
-                _pokemonList.value = emptyList()
+            try {
+                val pokemonNames = fetchPokemonNames(limit, offset)
+                if (pokemonNames != null) {
+                    val pokemons = fetchPokemonSpritesAndTypes(pokemonNames)
+                    _pokemonList.value += pokemons
+                    offset += limit
+                } else {
+                    _pokemonList.value = emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Error al cargar los datos de los Pokémon: ${e.message}")
+            } finally {
+                _isLoading.value = false
+                _isLoading2.value = false
             }
-            _isLoading.value = false
         }
     }
 
@@ -81,81 +97,52 @@ class MainViewModel : ViewModel() {
             val call: Response<PokeResponse> =
                 getRetrofit().create(RetrofitService::class.java)
                     .getPokemon("pokemon?limit=$limit&offset=$offset")
-            val pokemonResponse: PokeResponse? = call.body()
-            if (call.isSuccessful && pokemonResponse != null) {
-                pokemonResponse.results.map { it.name }
+            if (call.isSuccessful) {
+                val pokemonResponse: PokeResponse? = call.body()
+                pokemonResponse?.results?.map { it.name }
             } else {
                 null
             }
         }
     }
 
-    private suspend fun fetchAllPokemonNames(total: Int, batchSize: Int): List<String> {
-        val allNames = mutableListOf<String>()
-        var offset = 0
-
-        while (offset < total) {
-            val names = fetchPokemonNames(batchSize, offset)
-            if (names != null) {
-                allNames.addAll(names)
-                Log.d("fetchAllPokemonNames", "Total names fetched so far: ${allNames.size}")
-            } else {
-                Log.e("fetchAllPokemonNames", "Failed to fetch names at offset $offset")
-                break
-            }
-            offset += batchSize
-        }
-
-        return allNames
-    }
-
-    private suspend fun fetchPokemonSpritesAndTypesInBatches(
-        names: List<String>,
-        batchSize: Int
-    ): List<Pokemon> {
+    private suspend fun fetchPokemonSpritesAndTypes(names: List<String>): List<Pokemon> {
         val pokemons = mutableListOf<Pokemon>()
-        for (i in names.indices step batchSize) {
+        for (name in names) {
             try {
-                val batch = names.subList(i, minOf(i + batchSize, names.size))
-                for ((index, name) in batch.withIndex()) {
-                    val call: Response<PokeResponseSprite> =
-                        getRetrofit().create(RetrofitService::class.java)
-                            .getPokemonDetails("pokemon/$name")
+                val call: Response<PokeResponseSprite> =
+                    getRetrofit().create(RetrofitService::class.java)
+                        .getPokemonDetails("pokemon/$name")
 
-                    val pokeResponseSprite: PokeResponseSprite? = call.body()
+                val pokeResponseSprite: PokeResponseSprite? = call.body()
 
-                    val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
+                val sprite = pokeResponseSprite?.sprites?.frontDefault ?: ""
 
-                    if (sprite.isEmpty()) {
-                        continue
-                    }
-
-                    val types = pokeResponseSprite?.types?.joinToString(", ") { it ->
-                        it.typeDetail.name.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                        }
-                    } ?: ""
-                    pokemons.add(
-                        Pokemon(
-                            name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
-                            sprite,
-                            types
-                        )
-                    )
-                    Log.d("fetchPokemonSprites", "Fetched sprite for $name ($index/${batch.size})")
+                if (sprite.isEmpty()) {
+                    continue
                 }
-            } catch (e: Exception) {
-                Log.e(
-                    "fetchPokemonSprites",
-                    "Exception fetching com.example.pokeapi.Views.Pokemon batch: ${e.message}"
-                )
-            }
 
-            _pokemonList.value = pokemons.toList()
-            if (i == 0) {
-                _isLoading.value = false
+                val types = pokeResponseSprite?.types?.joinToString(", ") { it ->
+                    it.typeDetail.name.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                    }
+                } ?: ""
+                pokemons.add(
+                    Pokemon(
+                        name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
+                        sprite,
+                        types
+                    )
+                )
+                Log.d("MainViewModel", "Fetched sprite for $name")
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Error fetching details for $name: ${e.message}")
             }
         }
         return pokemons
+    }
+
+    fun loadMorePokemon() {
+        fetchPokemonData()
     }
 }

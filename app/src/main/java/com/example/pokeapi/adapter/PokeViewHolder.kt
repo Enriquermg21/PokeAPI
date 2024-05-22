@@ -10,7 +10,9 @@ import com.example.pokeapi.views.Pokemon
 class PokeViewHolder(
     private val binding: ItemPokemonBinding,
     private val bindingInfo: PokeinfoBinding
+
 ) : RecyclerView.ViewHolder(binding.root) {
+
 
     fun bind(pokemon: Pokemon) {
         binding.pokemonName.text = pokemon.name

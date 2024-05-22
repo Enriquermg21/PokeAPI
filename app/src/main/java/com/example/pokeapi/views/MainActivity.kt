@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeapi.adapter.PokeAdapter
 import com.example.pokeapi.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +37,14 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recyclerView.adapter = adapter
         observeViewModel()
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    mainViewModel.loadMorePokemon()
+                }
+            }
+        })
     }
 
     private fun observeViewModel() {
@@ -43,6 +52,13 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.isLoading.collectLatest { isLoading ->
                 binding.layoutloading.loadingView.visibility =
                     if (isLoading) View.VISIBLE else View.GONE
+            }
+        }
+
+        lifecycleScope.launch {
+            mainViewModel.isLoading2.collectLatest { isLoading2 ->
+                binding.layoutloadingwithoutback.loadingViewwithoutback.visibility =
+                    if (isLoading2) View.VISIBLE else View.GONE
             }
         }
 

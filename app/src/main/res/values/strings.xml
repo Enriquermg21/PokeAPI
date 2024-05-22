@@ -4,4 +4,5 @@
     <string name="imgvSprite">Sprite del pokemon</string>
     <string name="PokemonType" translatable="false"></string>
     <string name="loading">Cargando...</string>
+    <string name="endRecycledView">FIN!</string>
 </resources>
