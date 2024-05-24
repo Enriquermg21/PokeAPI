@@ -43,5 +43,3 @@ o
 ?app/src/main/java/com/example/pokeapi/views/pokeinfoActivity.kt,8\e\8e55b8563f4b66d012ab31c677923b02a2e1eeae
 o
 ?app/src/main/java/com/example/pokeapi/views/PokeinfoActivity.kt,c\9\c976745952df6d796e071c3f655858ee6b48b0de
-o
-?app/src/main/java/com/example/pokeapi/adapter/ScrollListener.kt,d\c\dc01d3a8212868a9f6138c73a77237b23a86bf65

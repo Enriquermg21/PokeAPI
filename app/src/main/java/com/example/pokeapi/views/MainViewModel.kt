@@ -54,7 +54,7 @@ class MainViewModel : ViewModel() {
     private fun fetchPokemonData() {
         if (!isLoadingSet) {
             _isLoading.value = true
-            isLoadingSet = true // Marca isLoading como true por primera vez
+            isLoadingSet = true
         } else {
             _isLoading2.value = true
         }

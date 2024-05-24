@@ -2,7 +2,6 @@ package com.example.pokeapi.views
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +23,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupRecyclerView()
+        observeViewModel()
 
+    }
+
+    private fun setupRecyclerView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = PokeAdapter(emptyList()) { name, sprite, type ->
@@ -35,8 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
             startActivity(intent)
         }
-        binding.recyclerView.adapter = adapter
-        observeViewModel()
+
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -45,8 +48,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+        binding.recyclerView.adapter = adapter
     }
-
     private fun observeViewModel() {
         lifecycleScope.launch {
             mainViewModel.isLoading.collectLatest { isLoading ->
@@ -64,7 +67,6 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             mainViewModel.pokemonList.collect { pokemons ->
-                Log.d("MainActivity", "Lista de Pokémon recibida: $pokemons")
                 adapter.updateList(pokemons)
             }
         }
