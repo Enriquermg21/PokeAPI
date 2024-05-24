@@ -1,4 +1,4 @@
-package com.example.pokeapi.Views
+package com.example.pokeapi.views
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

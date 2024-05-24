@@ -1,4 +1,4 @@
-package com.example.pokeapi.Adapter
+package com.example.pokeapi.adapter
 
 import Pokemon
 import android.view.LayoutInflater

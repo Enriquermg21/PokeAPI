@@ -1,4 +1,4 @@
-package com.example.pokeapi.Response
+package com.example.pokeapi.response
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,4 +1,4 @@
-package com.example.pokeapi.Views
+package com.example.pokeapi.views
 
 import MainViewModel
 import android.content.Intent
@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokeapi.Adapter.PokeAdapter
+import com.example.pokeapi.adapter.PokeAdapter
 import com.example.pokeapi.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

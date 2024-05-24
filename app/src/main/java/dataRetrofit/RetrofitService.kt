@@ -1,7 +1,7 @@
 package dataRetrofit
 
-import com.example.pokeapi.Response.PokeResponse
-import com.example.pokeapi.Response.PokeResponseSprite
+import com.example.pokeapi.response.PokeResponse
+import com.example.pokeapi.response.PokeResponseSprite
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Url
