@@ -1,11 +1,12 @@
 package com.example.pokeapi.adapter
 
-import Pokemon
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokeapi.databinding.ItemPokemonBinding
 import com.example.pokeapi.databinding.PokeinfoBinding
+
+import com.example.pokeapi.views.Pokemon
 
 class PokeAdapter(
     private var pokemonList: List<Pokemon>,

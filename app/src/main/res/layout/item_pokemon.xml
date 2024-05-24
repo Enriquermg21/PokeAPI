@@ -32,6 +32,7 @@
             android:textColor="@color/black"
             android:fontFamily="casual"
             android:paddingStart="40dp"
+            android:shadowDx="@android:integer/config_longAnimTime"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
