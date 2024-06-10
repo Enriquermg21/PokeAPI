@@ -43,3 +43,8 @@ o
 ?app/src/main/java/com/example/pokeapi/views/pokeinfoActivity.kt,8\e\8e55b8563f4b66d012ab31c677923b02a2e1eeae
 o
 ?app/src/main/java/com/example/pokeapi/views/PokeinfoActivity.kt,c\9\c976745952df6d796e071c3f655858ee6b48b0de
+>
+app/.gitignore,5\1\51e1c5d383dfaa35e0e7e5873a0a99355a86880f
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302

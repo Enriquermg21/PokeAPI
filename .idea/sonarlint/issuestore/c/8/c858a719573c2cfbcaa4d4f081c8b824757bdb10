@@ -1,3 +1,3 @@
 
- kotlin:S6558…"URemove this it parameter declaration or give this lambda parameter a meaningful name.(óÌ“–ÿÿÿÿÿ8¶µáù1J$9f2843cf-7730-47e0-98f9-8926e8d175cd
-—kotlin:S3776p"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ÍŸ–§8ãÌ°áù1J$88144ef0-94c9-4ea7-89fb-925b99cf0f1c
+ykotlin:S6558}"URemove this it parameter declaration or give this lambda parameter a meaningful name.(óÌ“–ÿÿÿÿÿ8¶‚Úú1
+?kotlin:S6305" Don't expose mutable flow types.(ÍÌöì8»‚Úú1
